@@ -16,7 +16,8 @@ jobs:
         uses: actions/checkout@v3
  
       - name: Install Newman and HTML Extra Reporter
-        run: npm install -g newman newman-reporter-htmlextra
+        run: npm install -g newman 
+         newman-reporter-htmlextra
  
       - name: Run Postman Tests and Generate HTML Report
         run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json --reporters cli,json    
