@@ -21,6 +21,8 @@ jobs:
  
       - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
+         npm install -g @faker-js/faker@latest
+         npm install -g uuid@latest
  
       - name: Run Postman Collection
         run: newman run Response_validation.postman_collection.json -r htmlextra
