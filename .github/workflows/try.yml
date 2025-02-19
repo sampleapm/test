@@ -19,10 +19,6 @@ jobs:
         run: npm install -g newman newman-reporter-htmlextra
  
       - name: Run Postman Tests and Generate HTML Report
-        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json --reporters=htmlextra --reporter-htmlextra-export=test-report.html
+        run: newman run "https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json" 
  
-      - name: Upload HTML Report as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: postman-html-report
-          path: test-report.html
+      
