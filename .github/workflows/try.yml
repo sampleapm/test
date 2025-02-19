@@ -1,24 +1,28 @@
-name: Run Postman Tests
+name: Run Postman Tests and Generate HTML Report
  
 on:
   push:
     branches:
-      - main  # Runs tests when code is pushed to the main branch
+      - main
   pull_request:
     branches:
       - main
  
 jobs:
   postman-tests:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
  
-      - name: Install Newman
-        run: npm install -g newman
+      - name: Install Newman and HTML Extra Reporter
+        run: npm install -g newman newman-reporter-htmlextra
  
-      - name: Run Postman Tests for Staging
-        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json 
-     
+      - name: Run Postman Tests and Generate HTML Report
+        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json --reporters=htmlextra --reporter-htmlextra-export=test-report.html
  
+      - name: Upload HTML Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: postman-html-report
+          path: test-report.html
