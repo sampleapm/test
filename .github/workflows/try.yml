@@ -19,6 +19,6 @@ jobs:
         run: npm install -g newman
  
       - name: Run Postman Tests and Generate HTML Report
-        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json
+        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json --reporters cli,json    
  
       
