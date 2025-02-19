@@ -25,6 +25,6 @@ jobs:
              npm install -g newman-reporter-htmlextra
  
       - name: Run Postman Collection
-        run: newman run Response_validation.postman_collection.json -reporters cli
+        run: newman run Response_validation.postman_collection.json --reporters cli
 
       
