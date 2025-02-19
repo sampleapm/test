@@ -27,8 +27,4 @@ jobs:
       - name: Run Postman Collection
         run: newman run Response_validation.postman_collection.json -reporters cli
 
-      - name: Upload HTML Report as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-           name: postman-html-report
-           path: report.html
+      
