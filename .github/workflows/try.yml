@@ -1,0 +1,24 @@
+name: Run Postman Tests
+ 
+on:
+  push:
+    branches:
+      - main  # Runs tests when code is pushed to the main branch
+  pull_request:
+    branches:
+      - main
+ 
+jobs:
+  postman-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+ 
+      - name: Install Newman
+        run: npm install -g newman
+ 
+      - name: Run Postman Tests for Staging
+        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json 
+     
+ 
