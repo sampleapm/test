@@ -18,13 +18,13 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: ubantu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      - name: Create dirct
+      - name: Create dir
           run:|
           mkdir SampleArtifact
 
@@ -32,7 +32,7 @@ jobs:
       - name: Install node
       - uses: actions/checkout@v4
         with:
-           node-version: '22.12.0'
+           node-version: '20'
 
       # Install newman 
       - name: Install Newman
