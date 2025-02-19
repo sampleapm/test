@@ -1,25 +1,26 @@
-name: Run Postman Tests and Generate HTML Report
+name: Run Postman Collection
  
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
  
 jobs:
-  postman-tests:
+  test-api:
     runs-on: windows-latest
+ 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
  
-      - name: Install Newman and HTML Extra Reporter
-        run: npm install -g newman 
-         newman-reporter-htmlextra
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
  
-      - name: Run Postman Tests and Generate HTML Report
-        run: newman run https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json --reporters cli,json    
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
  
-      
+      - name: Run Postman Collection
+        run: newman run Response_validation.postman_collection.json -r htmlextra
