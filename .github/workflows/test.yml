@@ -8,7 +8,7 @@ on:
  
 jobs:
   test-api:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
  
     steps:
       - name: Checkout repository
@@ -24,7 +24,7 @@ jobs:
              npm install -g newman-reporter-htmlextra
  
       - name: Run Postman Collection
-        run: newman run collection.json -e environment.json -reporters=htmlextra --reporter-htmlextra-export=test-report.html
+        run: newman run "https://github.com/sampleapm/test/blob/main/Response_validation.postman_collection.json" -reporters=htmlextra --reporter-htmlextra-export=test-report.html
 
       - name: Upload HTML Report as Artifact
         uses: actions/upload-artifact@v4
