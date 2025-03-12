@@ -1,0 +1,497 @@
+{
+	"info": {
+		"_postman_id": "db8b98e8-22aa-433d-9b92-d9762a6173bd",
+		"name": "student",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41318006"
+	},
+	"item": [
+		{
+			"name": "Create Emp Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is Created\",()=>{\r",
+							"    pm.response.to.have.status(\"Created\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 200 or 201\",()=>{\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201])\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Header is present\",()=>{\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Header value is present\",()=>{\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Time is below 100\",()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Time is above 2\",()=>{\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(2)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Cookie is present\",()=>{\r",
+							"    pm.expect(pm.cookies.has(\"help\")).to.be.false;\r",
+							"})\r",
+							"\r",
+							"//pm.test(\"Cookie value is present\",()=>{\r",
+							"  //  pm.expect(pm.cookies.get(\"help\")).to.eql(\"1\")\r",
+							"//})\r",
+							"\r",
+							"\r",
+							"var jsonData=pm.response.json();\r",
+							"pm.test(\"Property is present\",()=>{\r",
+							"    pm.expect(jsonData).to.have.property(\"id\")\r",
+							"    pm.expect(jsonData).to.have.property(\"married\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Text is present\",()=>{\r",
+							"    pm.expect(pm.response.text()).to.include(\"12\")\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Capturing ID\",()=>{\r",
+							"    pm.collectionVariables.set(\"id\", jsonData.id)\r",
+							"})\r",
+							"\r",
+							"if(pm.response.code===201){\r",
+							"    pm.execution.setNextRequest(\"Get single Emp info\")\r",
+							"    }else{\r",
+							"        pm.execution.setNextRequest(null)\r",
+							"    }\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/*var json=Math.random().toString(36).substring(2)\r",
+							"var bro=Math.random().toString(36).replace(/[0-9]/g,'').substring(2,12)\r",
+							"var name=\"Adarsh\"+bro;\r",
+							"var email=\"Adarsh\"+json+\"@gmail.com\"\r",
+							"\r",
+							"pm.collectionVariables.set(\"name\", name)\r",
+							"pm.collectionVariables.set(\"email\", email)*/\r",
+							"\r",
+							"var fix=Math.random().toString(36).replace(/[0-9]/g,'').substring(2,12)\r",
+							"var name=\"Adarsh\"+fix;\r",
+							"var email=\"Adarsh\"+fix+\"@gmail.com\"\r",
+							"\r",
+							"pm.collectionVariables.set(\"name\", name)\r",
+							"pm.collectionVariables.set(\"email\", email)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n      \"name\":\"{{name}}\",\r\n      \"married\": false,\r\n      \"phone\": [\r\n        123,\r\n        3456\r\n      ],\r\n      \"email\": \"{{email}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stud",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Json Schema validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var schema={\r",
+							"  //\"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"married\": {\r",
+							"      \"type\": \"boolean\"\r",
+							"    },\r",
+							"    \"phone\": {\r",
+							"      \"type\": \"array\",\r",
+							"      \"items\": [\r",
+							"        {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        {\r",
+							"          \"type\": \"integer\"\r",
+							"        }\r",
+							"      ]\r",
+							"    },\r",
+							"    \"email\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"id\",\r",
+							"    \"name\",\r",
+							"    \"married\",\r",
+							"    \"phone\",\r",
+							"    \"email\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"schema is valid\",()=>{\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/stud/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single Emp info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData=pm.response.json()\r",
+							"pm.test(\"Valid ID\",()=>{\r",
+							"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"id\"))\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validating value in response\",()=>{\r",
+							"   var jsonData=pm.response.json();\r",
+							"        pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"id\"))\r",
+							"        pm.expect(jsonData.name).to.eql(pm.collectionVariables.get(\"name\"))\r",
+							"        pm.expect(jsonData.married).to.eql(false);\r",
+							"        pm.expect(jsonData.phone).to.eql([123,3456]);\r",
+							"        pm.expect(jsonData.phone[0]).to.eql(123);\r",
+							"        pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"email\"))\r",
+							"})\r",
+							"\r",
+							"\r",
+							"/*if(pm.response.code===200){\r",
+							"    pm.execution.setNextRequest(null)\r",
+							"    }*/\r",
+							"\r",
+							"console.log(\"Logs\",pm.response.text())\r",
+							"   "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stud/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Emp info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData=pm.response.json();\r",
+							"jsonData.forEach(jsonData =>{\r",
+							"\r",
+							"    pm.test(\"Validating Data type for each object\",()=>{\r",
+							"        pm.expect(jsonData).to.be.an(\"object\");\r",
+							"        pm.expect(jsonData.id).to.be.a(\"string\");\r",
+							"        pm.expect(jsonData.name).to.be.a(\"string\");\r",
+							"        pm.expect(jsonData.married).to.be.a(\"boolean\");\r",
+							"        pm.expect(jsonData.phone).to.be.an(\"array\");\r",
+							"        pm.expect(jsonData.phone[0]).to.be.a(\"number\");\r",
+							"        pm.expect(jsonData.email).to.be.a(\"string\");\r",
+							"    })\r",
+							"})\r",
+							"    \r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/stud",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update partial Emp Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Partial update done\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"phone\": [\r\n        123,\r\n        25516\r\n      ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stud/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Emp Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update Successfull\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var fix=Math.random().toString(36).replace(/[0-9]/g,'').substring(2,12)\r",
+							"//var name=\"Adarsh\"+fix;\r",
+							"var email=\"Adarsh\"+fix+\"@gmail.com\"\r",
+							"//var married= true\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"name\", \"Adarsh\"+fix)\r",
+							"         //   OR\r",
+							"//pm.collectionVariables.set(\"name\", name)\r",
+							"pm.collectionVariables.set(\"email\", email)\r",
+							"pm.collectionVariables.set(\"ok\", true)\r",
+							"pm.environment.set(\"phone\", 1234)\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"name\":\"{{name}}\",\r\n      \"married\": \"{{ok}}\",\r\n      \"phone\": [\r\n        123,\r\n        {{phone}}\r\n      ],\r\n      \"email\": \"{{email}}\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/stud/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Emp data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.unset(\"name\")\r",
+							"pm.collectionVariables.unset(\"email\")\r",
+							"pm.collectionVariables.unset(\"id\")\r",
+							"pm.collectionVariables.unset(\"ok\")\r",
+							"pm.environment.unset(\"phone\")\r",
+							"\r",
+							"pm.test(\"Deleted\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/stud/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"stud",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "ok",
+			"value": ""
+		}
+	]
+}
